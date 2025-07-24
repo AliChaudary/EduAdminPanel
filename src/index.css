@@ -1,0 +1,95 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+@import 'editorjs-style';
+
+
+/* Container for Editor.js */
+.codex-editor {
+    font-family: 'Inter', sans-serif;
+    background: white;
+    border-radius: 8px;
+    padding: 16px;
+    line-height: 1.8;
+    min-height: 400px;
+    border: 1px solid #e5e7eb;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+/* Paragraphs */
+.ce-paragraph {
+    font-size: 1rem;
+    color: #374151;
+    margin-bottom: 1rem;
+}
+
+/* Headings */
+.ce-header {
+    margin-top: 1.5rem;
+    margin-bottom: 1rem;
+    font-weight: bold;
+    color: #111827;
+}
+
+.ce-header[data-level="1"] {
+    font-size: 1.875rem;
+}
+
+.ce-header[data-level="2"] {
+    font-size: 1.5rem;
+}
+
+.ce-header[data-level="3"] {
+    font-size: 1.25rem;
+}
+
+/* Lists */
+.cdx-list {
+    padding-left: 1.5rem;
+    margin: 1rem 0;
+}
+
+.cdx-list--unordered li {
+    list-style-type: disc;
+}
+
+.cdx-list--ordered li {
+    list-style-type: decimal;
+}
+
+/* Images */
+.cdx-image img {
+    max-width: 100%;
+    display: block;
+    margin: 1.5rem auto;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Quotes */
+.cdx-quote {
+    border-left: 4px solid #3b82f6;
+    padding-left: 1rem;
+    font-style: italic;
+    color: #374151;
+    margin: 1.5rem 0;
+}
+
+/* Toolbar buttons hover effect */
+.ce-toolbar__content,
+.ce-block__content {
+    max-width: 100%;
+}
+
+.ce-toolbar__plus,
+.ce-toolbar__settings-btn {
+    background: #f3f4f6;
+    border-radius: 6px;
+    padding: 4px;
+    transition: background 0.2s ease-in-out;
+}
+
+.ce-toolbar__plus:hover,
+.ce-toolbar__settings-btn:hover {
+    background: #e5e7eb;
+}
