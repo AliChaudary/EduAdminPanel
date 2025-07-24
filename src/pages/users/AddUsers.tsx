@@ -91,6 +91,7 @@ export default function CreateUser() {
       >
         <option value="user">Normal User</option>
         <option value="admin">Admin</option>
+        <option value="superadmin">Super Admin</option>
       </select>
 
       <button
