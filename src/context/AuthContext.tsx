@@ -33,27 +33,27 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [loading, setLoading] = useState(true);
 
   const login = async (email: string, password: string) => {
-    const result = await signInWithEmailAndPassword(auth, email, password);
-
-    // Fetch user role from Firestore after login
-    const userDoc = await getDoc(doc(db, "users", result.user.uid));
-    if (!userDoc.exists()) {
-      throw new Error("User data not found");
+    try {
+      const result = await signInWithEmailAndPassword(auth, email, password);
+      // Fetch user role from Firestore after login
+      const userDoc = await getDoc(doc(db, "users", result.user.uid));
+      if (!userDoc.exists()) {
+        throw new Error("User data not found");
+      }
+      const role = userDoc.data().role || "normal";
+      const fullData: UserData = {
+        uid: result.user.uid,
+        email: result.user.email || "",
+        role,
+        name: userDoc.data().name || "",
+      };
+      localStorage.setItem("userData", JSON.stringify(fullData));
+      setCurrentUser(result.user);
+      setUserData(fullData);
+    } catch (error) {
+      // Rethrow so ErrorBoundary or caller can handle
+      throw error;
     }
-
-    const role = userDoc.data().role || "normal";
-
-    const fullData: UserData = {
-      uid: result.user.uid,
-      email: result.user.email || "",
-      role,
-      name: userDoc.data().name || "",
-    };
-
-    localStorage.setItem("userData", JSON.stringify(fullData));
-
-    setCurrentUser(result.user);
-    setUserData(fullData);
   };
 
   const logout = async () => {
@@ -65,33 +65,38 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   useEffect(() => {
     const unsub = onAuthStateChanged(auth, async (user) => {
-      if (user) {
-        const cached = localStorage.getItem("userData");
-        if (cached) {
-          setUserData(JSON.parse(cached));
-          setCurrentUser(user);
-        } else {
-          const userDoc = await getDoc(doc(db, "users", user.uid));
-          if (userDoc.exists()) {
-            const fullData: UserData = {
-              uid: user.uid,
-              email: user.email || "",
-              role: userDoc.data().role || "normal",
-              name: userDoc.data().name || "",
-            };
-            setUserData(fullData);
-            localStorage.setItem("userData", JSON.stringify(fullData));
+      try {
+        if (user) {
+          const cached = localStorage.getItem("userData");
+          if (cached) {
+            setUserData(JSON.parse(cached));
+            setCurrentUser(user);
+          } else {
+            const userDoc = await getDoc(doc(db, "users", user.uid));
+            if (userDoc.exists()) {
+              const fullData: UserData = {
+                uid: user.uid,
+                email: user.email || "",
+                role: userDoc.data().role || "normal",
+                name: userDoc.data().name || "",
+              };
+              setUserData(fullData);
+              localStorage.setItem("userData", JSON.stringify(fullData));
+            }
+            setCurrentUser(user);
           }
-          setCurrentUser(user);
+        } else {
+          setCurrentUser(null);
+          setUserData(null);
+          localStorage.removeItem("userData");
         }
-      } else {
-        setCurrentUser(null);
-        setUserData(null);
-        localStorage.removeItem("userData");
+      } catch (error) {
+        // Optionally log or rethrow
+        // console.error(error);
+      } finally {
+        setLoading(false);
       }
-      setLoading(false);
     });
-
     return () => unsub();
   }, []);
 

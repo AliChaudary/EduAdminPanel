@@ -42,8 +42,10 @@ export default function BlogList() {
     try {
       await deleteDoc(doc(db, "blogs", selectedId));
       setToast({ message: "Blog deleted successfully" });
-    } catch {
+    } catch (err) {
       setToast({ message: "Error deleting blog", type: "error" });
+      // Optionally rethrow for ErrorBoundary
+      // throw err;
     } finally {
       setSelectedId(null);
     }
