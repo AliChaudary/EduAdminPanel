@@ -16,7 +16,7 @@ const Login = () => {
     e.preventDefault();
     setIsLoading(true);
     try {
-      await login(email, password);
+      await login(email, password); // Errors here are surfaced to the UI and can be caught globally
       navigate("/dashboard");
     } catch (err: any) {
       setError(err.message);

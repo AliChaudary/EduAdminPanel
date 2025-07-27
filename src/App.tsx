@@ -1,5 +1,6 @@
 import { Navigate, Route, BrowserRouter as Router, Routes } from "react-router";
 import { AuthProvider } from "./context/AuthContext";
+import ErrorBoundary from "./components/ErrorBoundary";
 import Login from "./pages/Login";
 import DashboardContent from "./components/DashboardContent";
 import ProtectedRoutes from "./components/ProtectedRoutes";
@@ -15,38 +16,40 @@ import UserList from "./pages/users/Users";
 
 function App() {
   return (
-    <AuthProvider>
-      <Router>
-        <Routes>
-          <Route
-            path="/login"
-            element={
-              <PublicRoute>
-                <Login />
-              </PublicRoute>
-            }
-          />
-          <Route
-            path="/dashboard"
-            element={
-              <ProtectedRoutes>
-                <DashboardLayout />
-              </ProtectedRoutes>
-            }
-          >
-            <Route index element={<Navigate to="/dashboard/home" replace />} />
-            <Route path="home" element={<DashboardContent />} />
-            <Route path="reset-password" element={<ResetPassword />} />
-            <Route path="blog" element={<Blog />} />
-            <Route path="add-blog" element={<AddBlog />} />
-            <Route path="users" element={<UserList />} />
-            <Route path="add-users" element={<AddUser />} />
-            <Route path="edit-blog/:id" element={<EditBlog />} />
-          </Route>
-          <Route path="/" element={<Navigate to="/dashboard" replace />} />
-        </Routes>
-      </Router>
-    </AuthProvider>
+    <ErrorBoundary>
+      <AuthProvider>
+        <Router>
+          <Routes>
+            <Route
+              path="/login"
+              element={
+                <PublicRoute>
+                  <Login />
+                </PublicRoute>
+              }
+            />
+            <Route
+              path="/dashboard"
+              element={
+                <ProtectedRoutes>
+                  <DashboardLayout />
+                </ProtectedRoutes>
+              }
+            >
+              <Route index element={<Navigate to="/dashboard/home" replace />} />
+              <Route path="home" element={<DashboardContent />} />
+              <Route path="reset-password" element={<ResetPassword />} />
+              <Route path="blog" element={<Blog />} />
+              <Route path="add-blog" element={<AddBlog />} />
+              <Route path="users" element={<UserList />} />
+              <Route path="add-users" element={<AddUser />} />
+              <Route path="edit-blog/:id" element={<EditBlog />} />
+            </Route>
+            <Route path="/" element={<Navigate to="/dashboard" replace />} />
+          </Routes>
+        </Router>
+      </AuthProvider>
+    </ErrorBoundary>
   );
 }
 
