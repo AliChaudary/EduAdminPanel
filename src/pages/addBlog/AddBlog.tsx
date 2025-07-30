@@ -67,7 +67,7 @@ export default function AddBlog() {
         createdAt: new Date().toISOString(),
       });
       setToast({ message: "Blog added successfully" });
-      setTimeout(() => navigate("/dashboard/blogs"), 1500);
+      setTimeout(() => navigate("/dashboard/blog"), 1500);
     } catch {
       setToast({ message: "Failed to save blog", type: "error" });
     } finally {

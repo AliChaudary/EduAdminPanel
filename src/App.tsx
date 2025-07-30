@@ -12,6 +12,7 @@ import EditBlog from "./pages/editBlog/EditBlog";
 import UsersPage from "./components/UsersPage";
 import AddUser from "./pages/users/AddUsers";
 import UserList from "./pages/users/Users";
+import AdminHomePage from "./pages/home/AdminHomePage";
 
 function App() {
   return (
@@ -35,7 +36,7 @@ function App() {
             }
           >
             <Route index element={<Navigate to="/dashboard/home" replace />} />
-            <Route path="home" element={<DashboardContent />} />
+            <Route path="home" element={<AdminHomePage />} />
             <Route path="reset-password" element={<ResetPassword />} />
             <Route path="blog" element={<Blog />} />
             <Route path="add-blog" element={<AddBlog />} />
